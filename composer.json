@@ -1,0 +1,27 @@
+{
+    "name": "liyaojian/easemob",
+    "description": "环信即时通信开发包",
+    "keywords": [
+        "liyajian",
+        "laravel",
+        "easemob"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.6.4",
+        "guzzlehttp/guzzle": "~6.2.1"
+    },
+    "authors": [
+        {
+            "name": "liyaojian",
+            "email": "m@liyaojian.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "liyaojian\\Easemob\\": "src/"
+        }
+    }
+}
