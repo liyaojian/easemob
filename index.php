@@ -18,4 +18,5 @@ $options = [
 
 $easemob = new \liyaojian\Easemob\App\Easemob($options);
 
-echo $easemob->getToken();
+$res = $easemob->getUserAll();
+var_dump($res);die;

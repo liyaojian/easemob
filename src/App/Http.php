@@ -13,7 +13,7 @@ use GuzzleHttp\Client;
 
 class Http
 {
-    private $http;
+    public $http;
 
     public function __construct()
     {
@@ -22,15 +22,14 @@ class Http
 
     private static function format($response)
     {
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(),true);
     }
 
-    public function get($uri, $access_token, $option)
+    public function get($uri, array $option = [], $access_token = null)
     {
-        $body = [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $access_token
-            ],
+        $body = [];
+        empty($access_token) ?: $body['headers'] = [
+            'Authorization' => 'Bearer ' . $access_token
         ];
         empty($option) ?: $body['json'] = $option;
 
@@ -38,16 +37,39 @@ class Http
         return $this->format($response);
     }
 
-    public function post($uri, $access_token, $option)
+    public function post($uri, array $option = [], $access_token = null)
     {
-        $body = [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $access_token
-            ],
+        $body = [];
+        empty($access_token) ?: $body['headers'] = [
+            'Authorization' => 'Bearer ' . $access_token
         ];
         empty($option) ?: $body['json'] = $option;
 
         $response = $this->http->post($uri, $body);
+        return $this->format($response);
+    }
+
+    public function put($uri, array $option = [], $access_token = null)
+    {
+        $body = [];
+        empty($access_token) ?: $body['headers'] = [
+            'Authorization' => 'Bearer ' . $access_token
+        ];
+        empty($option) ?: $body['json'] = $option;
+
+        $response = $this->http->put($uri, $body);
+        return $this->format($response);
+    }
+
+    public function delete($uri, array $option = [], $access_token = null)
+    {
+        $body = [];
+        empty($access_token) ?: $body['headers'] = [
+            'Authorization' => 'Bearer ' . $access_token
+        ];
+        empty($option) ?: $body['json'] = $option;
+
+        $response = $this->http->delete($uri, $body);
         return $this->format($response);
     }
 

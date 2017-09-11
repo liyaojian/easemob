@@ -2,8 +2,6 @@
 
 namespace liyaojian\Easemob\App;
 
-use GuzzleHttp\Client;
-
 class Easemob
 {
     // 缓存的名称
@@ -44,7 +42,7 @@ class Easemob
         $this->client_secret = $config['client_secret'];
         $this->token_cache_time = $config['token_cache_time'];
         $this->url = sprintf('%s/%s/%s/', $this->domain_name, $this->org_name, $this->app_name);
-        $this->http = new Client();
+        $this->http = new Http();
     }
 
     /***********************   注册   **********************************/
@@ -67,9 +65,7 @@ class Easemob
             'nickname' => $nick_name,
         ];
 
-        return $this->http->post($url, [
-            'json' => $option
-        ]);
+        return $this->http->post($url, $option);
     }
 
 
@@ -92,12 +88,7 @@ class Easemob
         ];
         $access_token = $this->getToken();
 
-        return $this->http->post($url, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $access_token
-            ],
-            'json' => $option
-        ]);
+        return $this->http->post($url, $option, $access_token);
     }
 
 
@@ -115,12 +106,7 @@ class Easemob
         $option = $users;
         $access_token = $this->getToken();
 
-        return $this->http->post($url, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $access_token
-            ],
-            'json' => $option
-        ]);
+        return $this->http->post($url, $option, $access_token);
     }
 
     /***********************   用户操作   **********************************/
@@ -138,11 +124,7 @@ class Easemob
         $option = [];
         $access_token = $this->getToken();
 
-        return $this->http->get($url, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $access_token
-            ]
-        ]);
+        return $this->http->get($url, $option, $access_token);
     }
 
 
@@ -162,9 +144,8 @@ class Easemob
             'cursor' => $cursor
         ];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'GET');
+        return $this->http->get($url, $option, $access_token);
     }
 
 
@@ -181,9 +162,8 @@ class Easemob
         $url = $this->url . 'users/' . $user_name;
         $option = [];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'DELETE');
+        return $this->http->delete($url, $option, $access_token);
     }
 
 
@@ -202,9 +182,8 @@ class Easemob
             'newpassword' => $new_password
         ];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'PUT');
+        return $this->http->put($url, $option, $access_token);
     }
 
 
@@ -224,9 +203,8 @@ class Easemob
             'nickname' => $nickname
         ];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'PUT');
+        return $this->http->put($url, $option, $access_token);
     }
 
 
@@ -242,9 +220,8 @@ class Easemob
         $url = $this->url . 'users/' . $user_name . '/disconnect';
         $option = [];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'GET');
+        return $this->http->get($url, $option, $access_token);
     }
 
 
@@ -263,9 +240,8 @@ class Easemob
         $url = $this->url . 'users/' . $owner_username . '/contacts/users/' . $friend_username;
         $option = [];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'POST');
+        return $this->http->post($url, $option, $access_token);
     }
 
 
@@ -282,9 +258,8 @@ class Easemob
         $url = $this->url . 'users/' . $owner_username . '/contacts/users/' . $friend_username;
         $option = [];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'DELETE');
+        return $this->http->delete($url, $option, $access_token);
     }
 
 
@@ -300,9 +275,8 @@ class Easemob
         $url = $this->url . 'users/' . $user_name . '/contacts/users/';
         $option = [];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'GET');
+        return $this->http->get($url, $option, $access_token);
     }
 
     /***********************   文件上传下载   **********************************/
@@ -327,9 +301,8 @@ class Easemob
             'file' => $curl_file,
         ];
         $access_token = $this->getToken();
-        $header [] = 'Authorization: Bearer ' . $access_token;
 
-        return Http::postCurl($url, $option, $header, 'POST');
+        return $this->http->post($url, $option, $access_token);
     }
 
 
@@ -350,7 +323,10 @@ class Easemob
         $header [] = 'Authorization: Bearer ' . $access_token;
         $header [] = 'share-secret: ' . $share_secret;
 
-        return Http::postCurl($url, $option, $header, 'GET', 10, false);
+        $response = $this->http->http->get($url, [
+            'headers' => $header
+        ]);
+        return json_decode($response, true);
     }
 
 
@@ -371,10 +347,8 @@ class Easemob
             'client_secret' => $this->client_secret,
         ];
 
-        $return = $this->http->post($url, [
-            'json' => $option
-        ])->getBody();
-        
+        $return = $this->http->post($url, $option);
+
         return $return['access_token'];
     }
 
