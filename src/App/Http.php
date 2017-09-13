@@ -27,7 +27,9 @@ class Http
 
     public function get($uri, array $option = [], $access_token = null)
     {
-        $body = [];
+        $body = [
+            'http_errors' => false
+        ];
         empty($access_token) ?: $body['headers'] = [
             'Authorization' => 'Bearer ' . $access_token
         ];
@@ -39,7 +41,9 @@ class Http
 
     public function post($uri, array $option = [], $access_token = null)
     {
-        $body = [];
+        $body = [
+            'http_errors' => false
+        ];
         empty($access_token) ?: $body['headers'] = [
             'Authorization' => 'Bearer ' . $access_token
         ];
@@ -51,7 +55,9 @@ class Http
 
     public function put($uri, array $option = [], $access_token = null)
     {
-        $body = [];
+        $body = [
+            'http_errors' => false
+        ];
         empty($access_token) ?: $body['headers'] = [
             'Authorization' => 'Bearer ' . $access_token
         ];
@@ -63,7 +69,9 @@ class Http
 
     public function delete($uri, array $option = [], $access_token = null)
     {
-        $body = [];
+        $body = [
+            'http_errors' => false
+        ];
         empty($access_token) ?: $body['headers'] = [
             'Authorization' => 'Bearer ' . $access_token
         ];

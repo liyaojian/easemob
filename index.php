@@ -18,5 +18,13 @@ $options = [
 
 $easemob = new \liyaojian\Easemob\App\Easemob($options);
 
-$res = $easemob->getUserAll();
-var_dump($res);die;
+$time = 2017091317;
+$file = "./downfile/".$time.'.gz';
+//try {
+//    $easemob->exportMessageHistory($time, $file);
+//    //处理下载的文件
+//    ungz($file);
+//} catch (\Exception $e) {
+//    echo $e->getMessage();
+//}
+ungz($file);

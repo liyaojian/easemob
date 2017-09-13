@@ -22,6 +22,9 @@
     "autoload": {
         "psr-4": {
             "liyaojian\\Easemob\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers.php"
+        ]
     }
 }
