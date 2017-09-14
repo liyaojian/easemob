@@ -180,7 +180,7 @@ trait EasemobMessages
      * @return mixed
      * @throws EasemobError
      */
-    public function sendMessagePNS($users, $target_type = 'users', $action = "", $send_user = 'admin')
+    public function sendMessageCMD($users, $target_type = 'users', $action = "", $send_user = 'admin', $ext = '')
     {
         $url = $this->url . 'messages';
         $option = [
@@ -190,7 +190,8 @@ trait EasemobMessages
                 'type' => 'cmd',
                 'action' => $action
             ],
-            'from' => $send_user
+            'from' => $send_user,
+            'ext' => $ext
         ];
         $access_token = $this->getToken();
 
@@ -219,7 +220,7 @@ trait EasemobMessages
     /**
      * 保存历史记录到本地
      * @param $time 20170920 格式
-     * @param $path 绝对路径 
+     * @param $path 绝对路径
      * @return mixed
      */
     public function saveMessageHistory($time, $path = '/')
@@ -238,6 +239,6 @@ trait EasemobMessages
             }
             return $file;
         }
-        throw new EasemobError('can not get downurl',404);
+        throw new EasemobError('can not get downurl', 404);
     }
 }
