@@ -1,5 +1,5 @@
 /vendor
 /.idea
-/cache/*.php
+/cache/
 config.php
-/tests/config/*.php
+/tests/config/config.php
