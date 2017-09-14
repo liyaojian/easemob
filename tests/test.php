@@ -23,11 +23,11 @@ try {
 //    }
     $array = readgz($path . $time . '-1.gz');
     foreach ($array as $key => $value) {
-        if ($value['payload']['bodies'][0]['type'] = 'img') {
+        if ($value['payload']['bodies'][0]['type'] == 'img') {
             $easemob->downloadFile($value['payload']['bodies'][0]['url'], $path, $value['payload']['bodies'][0]['filename']);
         }
-        if ($value['payload']['bodies'][0]['type'] = 'audio') {
-            $easemob->downloadFile($value['payload']['bodies'][0]['url'], $path, $value['payload']['bodies'][0]['filename']);
+        if ($value['payload']['bodies'][0]['type'] == 'audio') {
+            $easemob->downloadFile($value['payload']['bodies'][0]['url'], $path, $value['payload']['bodies'][0]['filename'] . '.amr');
         }
     }
 } catch (\liyaojian\Easemob\Handler\EasemobError $e) {
