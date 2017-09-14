@@ -12,7 +12,7 @@
 
 ```json
 require: {
-    "johnlui/aliyun-oss": "0.8.*"
+    "iyaojian/easemob": "0.8.*"
 }
 ```
 
