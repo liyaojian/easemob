@@ -11,7 +11,7 @@ define('ROOT', dirname(__DIR__));
 
 $options = require "./config/config.php";
 
-$easemob = new \liyaojian\Easemob\App\Easemob($options);
+$easemob = new \liyaojian\Easemob\Handler\Easemob($options);
 
 $time = 2017091415;
 $path = ROOT . "/cache/";
@@ -22,7 +22,7 @@ try {
         $array = array_merge($array,readgz($path.$v));
     }
     print_r($array);
-} catch (\liyaojian\Easemob\App\EasemobError $e) {
+} catch (\liyaojian\Easemob\Handler\EasemobError $e) {
     echo $e->getCode().' | '.$e->getMessage().' | '.$e->getTraceAsString();
 }
 

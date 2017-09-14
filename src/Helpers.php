@@ -18,7 +18,7 @@ function readgz($file)
     $json = '[' . substr($string, 0, -1) . ']';
     $array = json_decode($json,true);
     if (!$array){
-        throw new \liyaojian\Easemob\App\EasemobError(json_last_error_msg(),json_last_error());
+        throw new \liyaojian\Easemob\Handler\EasemobError(json_last_error_msg(),json_last_error());
     }
     return $array;
 }

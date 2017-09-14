@@ -1,6 +1,6 @@
 <?php
 
-namespace liyaojian\Easemob\App;
+namespace liyaojian\Easemob\Handler;
 
 class Easemob
 {

@@ -6,8 +6,7 @@
  * Time: 17:04
  */
 
-namespace liyaojian\Easemob\App;
-
+namespace liyaojian\Easemob\Handler;
 
 use GuzzleHttp\Client;
 
