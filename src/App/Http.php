@@ -22,7 +22,10 @@ class Http
 
     private static function format($response)
     {
-        return json_decode($response->getBody(),true);
+        return [
+            'status_code' => $response->getStatusCode(),
+            'data' => json_decode($response->getBody(),true)
+        ];
     }
 
     public function get($uri, array $option = [], $access_token = null)
@@ -80,6 +83,4 @@ class Http
         $response = $this->http->delete($uri, $body);
         return $this->format($response);
     }
-
-
 }

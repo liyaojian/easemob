@@ -22,9 +22,6 @@ class Easemob
     // 客户秘钥
     public $client_secret = null;
 
-    // token缓存时间
-    public $token_cache_time = null;
-
     // url地址
     public $url = null;
 
@@ -40,7 +37,6 @@ class Easemob
         $this->app_name = $config['app_name'];
         $this->client_id = $config['client_id'];
         $this->client_secret = $config['client_secret'];
-        $this->token_cache_time = $config['token_cache_time'];
         $this->url = sprintf('%s/%s/%s/', $this->domain_name, $this->org_name, $this->app_name);
         $this->http = new Http();
     }
@@ -349,7 +345,7 @@ class Easemob
 
         $return = $this->http->post($url, $option);
 
-        return $return['access_token'];
+        return $return['data']['access_token'];
     }
 
     /**

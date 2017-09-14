@@ -1,3 +1,5 @@
 /vendor
 /.idea
-/downfile/*
+/cache/*.php
+config.php
+/tests/config/*.php

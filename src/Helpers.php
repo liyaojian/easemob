@@ -5,23 +5,20 @@
  * Date: 2017/9/13
  * Time: 22:44
  */
-function ungz($file_name)
+function readgz($file)
 {
-    $buffer_size = 4096; // read 4kb at a time
-    $out_file_name = str_replace('.gz', '', $file_name);
-
-// Open our files (in binary mode)
-    $file = gzopen($file_name, 'rb');
-    $out_file = fopen($out_file_name, 'wb');
-
-// Keep repeating until the end of the input file
-    while (!gzeof($file)) {
-        // Read buffer-size bytes
-        // Both fwrite and gzread and binary-safe
-        fwrite($out_file, gzread($file, $buffer_size));
+    $string = '';
+    $zd = gzopen($file, "r");
+    while (!gzeof($zd)) { //逐行读取
+        $string .= gzread($zd, 10000);
     }
+    gzclose($zd);
 
-// Files are done, close files
-    fclose($out_file);
-    gzclose($file);
+    $string = preg_replace('/\n|\r\n/', ',', $string);
+    $json = '[' . substr($string, 0, -1) . ']';
+    $array = json_decode($json,true);
+    if (!$array){
+        throw new \liyaojian\Easemob\App\EasemobError(json_last_error_msg(),json_last_error());
+    }
+    return $array;
 }

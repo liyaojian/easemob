@@ -198,21 +198,46 @@ trait EasemobMessages
     }
 
     /**
-     * 导出历史记录
-     * @param $time
+     * 获取历史记录文件地址
+     * @param $time 20170920 格式
      * @return mixed
+     * @throws EasemobError
      */
-    public function exportMessageHistory($time, $path = '/')
+    public function getMessageHistoryUrl($time)
     {
         $url = $this->url . 'chatmessages/' . $time;
         $option = [];
         $access_token = $this->getToken();
 
         $response = $this->http->get($url, $option, $access_token);
-        if (isset($response['error'])) {
-            throw new \Exception($response['error'], 400);
+        if ($response['status_code'] != 200) {
+            throw new EasemobError($response['data']['error'], $response['status_code']);
         }
-        $downUrl = $response['data'][0]['url'];
-        $res = $this->http->http->get($downUrl, ['save_to' => $path]);
+        return $response;
+    }
+
+    /**
+     * 保存历史记录到本地
+     * @param $time 20170920 格式
+     * @param $path 绝对路径 
+     * @return mixed
+     */
+    public function saveMessageHistory($time, $path = '/')
+    {
+        $response = $this->getMessageHistoryUrl($time);
+        $urls = $response['data']['data'];
+        if (!empty($urls)) {
+            $file_count = 0;
+            $file = [];
+            foreach ($urls as $key => $value) {
+                $file_count++;
+                $url = $value['url'];
+                $filename = $time . '-' . $file_count . '.gz';
+                $file[] = $filename;
+                $this->http->http->get($url, ['save_to' => $path . $filename]);
+            }
+            return $file;
+        }
+        throw new EasemobError('can not get downurl',404);
     }
 }
