@@ -310,19 +310,18 @@ class Easemob
      *
      * @return mixed
      */
-    public function downloadFile($uuid, $share_secret)
+    public function downloadFile($url,$path,$filename)
     {
-        $url = $this->url . 'chatfiles/' . $uuid;
-
         $option = [];
         $access_token = $this->getToken();
         $header [] = 'Authorization: Bearer ' . $access_token;
-        $header [] = 'share-secret: ' . $share_secret;
+        $header [] = 'Accept: application/octet-stream';
 
-        $response = $this->http->http->get($url, [
-            'headers' => $header
+        $this->http->http->get($url, [
+            'headers' => $header,
+            'save_to' => $path . $filename
         ]);
-        return json_decode($response, true);
+        return true;
     }
 
 
