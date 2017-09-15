@@ -344,7 +344,7 @@ class Easemob
 
         $return = $this->http->post($url, $option);
 
-        return $return['data']['access_token'];
+        return $return['access_token'];
     }
 
     /**

@@ -21,10 +21,12 @@ class Http
 
     private static function format($response)
     {
-        return [
-            'status_code' => $response->getStatusCode(),
-            'data' => json_decode($response->getBody(),true)
-        ];
+        $responseBody = json_decode($response->getBody(), true);
+        if ($response->getStatusCode() != 200) {
+            throw new EasemobError($responseBody['error'], $response['status_code']);
+        }
+        
+        return $responseBody;
     }
 
     public function get($uri, array $option = [], $access_token = null)

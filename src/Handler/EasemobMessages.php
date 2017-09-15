@@ -204,16 +204,14 @@ trait EasemobMessages
      * @return mixed
      * @throws EasemobError
      */
-    public function getMessageHistoryUrl($time)
+    public function getMessageHistory($time)
     {
         $url = $this->url . 'chatmessages/' . $time;
         $option = [];
         $access_token = $this->getToken();
 
         $response = $this->http->get($url, $option, $access_token);
-        if ($response['status_code'] != 200) {
-            throw new EasemobError($response['data']['error'], $response['status_code']);
-        }
+      
         return $response;
     }
 
@@ -225,8 +223,8 @@ trait EasemobMessages
      */
     public function saveMessageHistory($time, $path = '/')
     {
-        $response = $this->getMessageHistoryUrl($time);
-        $urls = $response['data']['data'];
+        $response = $this->getMessageHistory($time);
+        $urls = $response['data'];
         if (!empty($urls)) {
             $file_count = 0;
             $file = [];
