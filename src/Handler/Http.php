@@ -21,9 +21,9 @@ class Http
 
     private static function format($response)
     {
-        $responseBody = json_decode($response->getBody(), true);
+        $responseBody = json_decode((string)$response->getBody(), true);
         if ($response->getStatusCode() != 200) {
-            throw new EasemobError($responseBody['error'], $response['status_code']);
+            throw new EasemobError($responseBody['error'], $response->getStatusCode());
         }
         
         return $responseBody;
