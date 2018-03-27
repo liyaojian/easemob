@@ -349,7 +349,7 @@ class Easemob
 
             $return = $this->http->post($url, $option);
             $token = $return['access_token'];
-            Cache::setTime('EASEMOB_ACCESS_TOKEN', $token, $return['expires_in'] - 100);
+            Cache::put('EASEMOB_ACCESS_TOKEN', $token, $return['expires_in'] - 100);
             return $token;
         }
     }
