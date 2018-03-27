@@ -2,6 +2,8 @@
 
 namespace liyaojian\Easemob\Handler;
 
+use Cache;
+
 class Easemob
 {
     // 缓存的名称
@@ -310,7 +312,7 @@ class Easemob
      *
      * @return mixed
      */
-    public function downloadFile($url,$path,$filename)
+    public function downloadFile($url, $path, $filename)
     {
         $option = [];
         $access_token = $this->getToken();
@@ -334,17 +336,22 @@ class Easemob
      */
     public function getToken()
     {
-        $url = $this->url . "token";
+        if ($token = Cache::get('EASEMOB_ACCESS_TOKEN')) {
+            return $token;
+        } else {
+            $url = $this->url . "token";
 
-        $option = [
-            'grant_type' => 'client_credentials',
-            'client_id' => $this->client_id,
-            'client_secret' => $this->client_secret,
-        ];
+            $option = [
+                'grant_type' => 'client_credentials',
+                'client_id' => $this->client_id,
+                'client_secret' => $this->client_secret,
+            ];
 
-        $return = $this->http->post($url, $option);
-
-        return $return['access_token'];
+            $return = $this->http->post($url, $option);
+            $token = $return['access_token'];
+            Cache::setTime('EASEMOB_ACCESS_TOKEN', $token, $return['expires_in'] - 100);
+            return $token;
+        }
     }
 
     /**
